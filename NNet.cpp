@@ -107,7 +107,7 @@ void inNode::setInput(double in)
 	
 void inNode::calValue()
 {
-	value=activF(input+bias);
+	value=activF(input);
 }
 
 void inNode::setOutNode(int num, connect cont[])
@@ -147,7 +147,6 @@ void nNet::initNode(int numL,int struc[])
 					temp[j].conWeight=&weight[0][i][j];
 				}
 				inN[i].setOutNode(struc[cur+1],temp);
-				inN[i].bias=0;
 			}
 		}
 		else if (cur==numL-1)
@@ -380,10 +379,113 @@ void nNet::displayWeight(char fileName[])
 	}
 }
 
-bool nNet::saveWeight(char [])
+bool nNet::saveWeight(char fileToSave[])
+{
+	ofstream file;
+	file.open(fileToSave);
+	if (!file.is_open()) return false;
+
+	for(int i=0; i<numLayer; i++)
+	{
+		file<<strucL[i];
+		if(i!=numLayer-1) file<<" ";
+	}
+	file<<"\n";
+	int cur=0;
+	while(cur<numLayer-1)
+	{
+		int nextLayer=cur+1;
+		if(cur==0)
+		{
+			file<<"I "<<strucL[cur];
+			if(nextLayer<numLayer-1)
+			{
+				file<<" H "<<strucL[nextLayer]<<"\n";
+				for(int i=0; i<strucL[nextLayer]; i++)
+				{
+					for(int j=0; j<strucL[cur]; j++)
+					{
+						file<<weight[cur][j][i]<<" ";
+					}
+					file<<ierN[nextLayer-1][i].bias<<"\n";
+				}
+			}
+			else
+			{
+				file<<" O "<<strucL[nextLayer]<<"\n";
+				for(int i=0; i<strucL[nextLayer]; i++)
+				{
+					for(int j=0; j<strucL[cur]; j++)
+					{
+						file<<weight[cur][j][i]<<" ";
+					}
+					file<<oN.bias<<"\n";
+				}
+			}
+		}
+		else
+		{
+			file<<"H "<<strucL[cur];
+			if(nextLayer<numLayer-2)
+			{
+				file<<" H "<<strucL[nextLayer]<<"\n";
+				for(int i=0; i<strucL[nextLayer]; i++)
+				{
+					for(int j=0; j<strucL[cur]; j++)
+					{
+						file<<weight[cur][j][i]<<" ";
+					}
+					file<<ierN[nextLayer-1][i].bias<<"\n";
+				}
+			}
+			else
+			{
+				file<<" O "<<strucL[nextLayer]<<"\n";
+				for(int i=0; i<strucL[nextLayer]; i++)
+				{
+					for(int j=0; j<strucL[cur]; j++)
+					{
+						file<<weight[cur][j][i]<<" ";
+					}
+					file<<oN.bias<<"\n";
+				}
+			}
+		}
+		cur++;
+	}
+	file.close();
+	return true;
+}
+bool nNet::loadWeight(char weightFile[])
 {
 	ifstream file;
-}
-bool nNet::loadWeight(char [])
-{
+	file.open(weightFile);
+	if (!file.is_open()) return false;
+
+	int l;
+	char c;
+	for(int i=0; i<numLayer; i++)
+	{
+		file>>l;
+		if (l!=strucL[i]) return false;
+	}
+	int cur=0;
+	while (cur<numLayer-1)
+	{
+		int nextLayer=cur+1;
+		file>>c>>l>>c>>l;
+		for (int i=0; i<strucL[nextLayer]; i++)
+		{
+
+			for (int j=0; j<strucL[cur]; j++)
+			{
+				file>>weight[cur][j][i];
+			}
+			if (nextLayer<numLayer-1) file>>oN.bias;
+			else file>>ierN[nextLayer-1][i].bias;
+		}
+		cur++;
+	}
+	file.close();
+	return true;
 }

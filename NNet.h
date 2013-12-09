@@ -3,7 +3,7 @@ using namespace std;
 class node
 {
 public:
-	double value,di,bias;
+	double value,di;
 	int layer;
 public:
 	double activF(double);
@@ -25,6 +25,7 @@ class oNode:public node
 public:
 	connect inCon[50];
 	int numIn;
+	double bias;
 public:
 	void calValue();
 	void setInNode(int num, connect cont[]);
@@ -35,7 +36,8 @@ class ierNode: public node
 {
 public:
 	connect inCon[50],outCon[50];
-	int numIn,numOut;	
+	int numIn,numOut;
+	double bias;
 public:
 	void calValue();
 	void setInNode(int num, connect cont[]);
