@@ -1,10 +1,9 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <cstdlib>
-#include <time.h>
+#include <ctime>
 #include <fstream>
 #include "NNet.h"
-
 
 double connect::getWeight()
 {
@@ -379,11 +378,13 @@ void nNet::displayWeight(char fileName[])
 	}
 }
 
-bool nNet::saveWeight(char fileToSave[])
+bool nNet::saveWeight(char fileToSave[], double accur)
 {
 	ofstream file;
 	file.open(fileToSave);
 	if (!file.is_open()) return false;
+
+	file << accur << endl;
 
 	for(int i=0; i<numLayer; i++)
 	{

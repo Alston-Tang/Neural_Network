@@ -1,3 +1,6 @@
+#ifndef _NNET_H_
+#define _NNET_H_
+
 using namespace std;
 
 class node
@@ -76,6 +79,8 @@ public:
 	double calErr(double[],double);
 	double calErr(double,double);
 	void displayWeight(char[]);
-	bool saveWeight(char []);
+	bool saveWeight(char [], double accur);
 	bool loadWeight(char []);
 };
+
+#endif
