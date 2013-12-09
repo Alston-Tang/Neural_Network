@@ -1,0 +1,5 @@
+Usage of preprocessor.sh:
+./preprocessor.sh raw-training.data dataset.dat answer.dat
+
+Usage of trainer.sh:
+./trainer.sh dataset.dat answer.dat best.nn <max_iteration> <small_sample_mode>
