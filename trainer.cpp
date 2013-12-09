@@ -27,8 +27,11 @@ int main(int argc, char **argv) {
 	resultChecker check;
 
 	double t;
+	char s[111];
 	int i;
-	while (fscanf(fans, "%lf", &t) == 1) {
+	while (fscanf(fans, "%s", s) == 1) {
+		if (*s == '?') continue;
+		sscanf(s, "%lf", &t);
 		data.push_back(make_pair(new double[NUM_ATTR], t));
 		for (i = 0; i < NUM_ATTR; i++) {
 			fscanf(fdata, "%lf", data.back().first + i);
