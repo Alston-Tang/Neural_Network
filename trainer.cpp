@@ -67,9 +67,9 @@ int main(int argc, char **argv) {
 			maxx = co; 
 			net.saveWeight(argv[3], maxx);
 		}
-//		printf("#%lf\n", co);
+		printf("\rProgress: %.2lf%%, accuracy: %lf%%\t\t", (double) (j + 1) / max_iter * 100, maxx * 100);
 	}
-	printf("%lf\n", maxx);
+	puts("");
 	delete[] test_rst;
 	delete[] test_tar;
 }
