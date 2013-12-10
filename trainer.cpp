@@ -45,7 +45,8 @@ int main(int argc, char **argv) {
 
 	int *struc = mode ? small_struc : large_struc, layer = mode ? small_layer : large_layer;
 	net.initNode(layer, struc);
-	net.setAlpha(0.065);
+	double a = 0.065;
+	net.setAlpha(a);
 	check.setAcceptNErr(1, 0.5);
 	if(argc == 6 || !net.loadWeight(argv[6])) net.initWeight(layer, struc);
 
@@ -64,6 +65,10 @@ int main(int argc, char **argv) {
 		}
 		co = check.checkCorrectRate(test_rst, test_tar, test_num);
 		if (maxx < co) {
+			if (maxx < 0.7 && co >= 0.7) {
+				a /= 2;
+				net.setAlpha(a);
+			}
 			maxx = co; 
 			net.saveWeight(argv[3], maxx);
 		}
