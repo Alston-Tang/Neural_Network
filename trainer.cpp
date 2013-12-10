@@ -13,7 +13,7 @@ using namespace std;
 vector<pair<double *, double> > data;
 
 int small_struc[] = {NUM_ATTR, 20, 6, 1}, small_layer = 4,
-		large_struc[] = {NUM_ATTR, NUM_ATTR, NUM_ATTR, 20, 6, 1}, large_layer = 6;
+		large_struc[] = {NUM_ATTR, 25, 20, 7, 1}, large_layer = 5;
 
 int main(int argc, char **argv) {
 	if (argc != 6 && argc != 7) return 0;
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 
 	int *struc = mode ? small_struc : large_struc, layer = mode ? small_layer : large_layer;
 	net.initNode(layer, struc);
-	net.setAlpha(0.05);
+	net.setAlpha(0.065);
 	check.setAcceptNErr(1, 0.5);
 	if(argc == 6 || !net.loadWeight(argv[6])) net.initWeight(layer, struc);
 
