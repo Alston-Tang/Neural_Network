@@ -14,9 +14,9 @@ exit unless defined($fans);
 my %dataTrans;
 for (my $i = 0; $i < 3; $i++) {
 	$dataTrans{$i} = shift;
-	$dataTrans{$i} = $i unless defined($dataTrans{$i});
+	$dataTrans{$i} = $i - 1 unless defined($dataTrans{$i});
 }
-$dataTrans{'?'} = 3;
+$dataTrans{'?'} = 2;
 
 my %ansTrans;
 for (my $i = 0; $i < 3; $i++) {

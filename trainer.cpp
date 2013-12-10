@@ -12,6 +12,9 @@ using namespace std;
 
 vector<pair<double *, double> > data;
 
+int small_struc[] = {NUM_ATTR, 20, 6, 1}, small_layer = 4,
+		large_struc[] = {NUM_ATTR, NUM_ATTR, NUM_ATTR, 20, 6, 1}, large_layer = 6;
+
 int main(int argc, char **argv) {
 	if (argc != 6 && argc != 7) return 0;
 
@@ -40,11 +43,11 @@ int main(int argc, char **argv) {
 	fclose(fdata);
 	fclose(fans);
 
-	int struc[] = {NUM_ATTR, 20, 6, 1}, layer = 4;
+	int *struc = mode ? small_struc : large_struc, layer = mode ? small_layer : large_layer;
 	net.initNode(layer, struc);
 	net.setAlpha(0.05);
 	check.setAcceptNErr(1, 0.5);
-	if(argc == 6 || !net.loadWeight(argv[7])) net.initWeight(layer, struc);
+	if(argc == 6 || !net.loadWeight(argv[6])) net.initWeight(layer, struc);
 
 	double maxx = 0;
 	int train_num = (int) (data.size() * TRAIN), test_num = data.size() - train_num;
@@ -60,10 +63,12 @@ int main(int argc, char **argv) {
 			test_tar[i - train_num] = data[i].second;
 		}
 		co = check.checkCorrectRate(test_rst, test_tar, test_num);
-		if (maxx < co) maxx = co; 
+		if (maxx < co) {
+			maxx = co; 
+			net.saveWeight(argv[3], maxx);
+		}
 //		printf("#%lf\n", co);
 	}
-	net.saveWeight(argv[3], maxx);
 	printf("%lf\n", maxx);
 	delete[] test_rst;
 	delete[] test_tar;

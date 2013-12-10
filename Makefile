@@ -1,5 +1,5 @@
 CC=g++
-CPPFLAGS=-g -Wall
+CPPFLAGS=-g -Wall -O2
 
 trainer: trainer.o NNet.o resultChecker.o
 
